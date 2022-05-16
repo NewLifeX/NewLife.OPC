@@ -1,23 +1,22 @@
 ﻿using System.ComponentModel;
-using Hylasoft.Opc.Da;
 using NewLife.IoT;
 using NewLife.IoT.Drivers;
 using NewLife.IoT.ThingModels;
 using NewLife.Serialization;
+using Opc;
+using Opc.Da;
+using Node = NewLife.IoT.Drivers.Node;
 
 namespace NewLife.OPC.Drivers;
 
 /// <summary>
-/// 设备网络心跳驱动
+/// OpcDa协议
 /// </summary>
-/// <remarks>
-/// IoT驱动，通过Ping探测到目标设备的网络情况，并收集延迟数据
-/// </remarks>
-[Driver("OPC")]
-[DisplayName("OPC协议")]
-public class OPCDriver : DisposeBase, IDriver
+[Driver("OpcDa")]
+[DisplayName("OpcDa协议")]
+public class OpcDaDriver : DisposeBase, IDriver
 {
-    private DaClient _client;
+    private Opc.Da.Server _client;
     private Int32 _nodes;
 
     #region 构造
@@ -39,7 +38,7 @@ public class OPCDriver : DisposeBase, IDriver
     /// 创建驱动参数对象，可序列化成Xml/Json作为该协议的参数模板
     /// </summary>
     /// <returns></returns>
-    public virtual IDriverParameter CreateParameter() => new OPCParameter();
+    public virtual IDriverParameter CreateParameter() => new OpcDaParameter();
 
     /// <summary>
     /// 打开通道。一个OPC设备可能分为多个通道读取，需要共用Tcp连接，以不同节点区分
@@ -49,11 +48,18 @@ public class OPCDriver : DisposeBase, IDriver
     /// <returns></returns>
     public INode Open(IDevice channel, IDictionary<String, Object> parameters)
     {
-        var pm = JsonHelper.Convert<OPCParameter>(parameters);
+        var pm = JsonHelper.Convert<OpcDaParameter>(parameters);
 
         if (_client == null)
         {
-            var client = new DaClient(new Uri(pm.Address));
+            var uri = new Uri(pm.Address);
+            var url = new URL(uri.AbsolutePath)
+            {
+                Scheme = uri.Scheme,
+                HostName = uri.Host
+            };
+
+            var client = new Opc.Da.Server(new OpcCom.Factory(), url);
             client.Connect();
 
             _client = client;
@@ -94,14 +100,14 @@ public class OPCDriver : DisposeBase, IDriver
 
         if (points == null || points.Length == 0) return dic;
 
-        var p = node.Parameter as OPCParameter;
+        //var p = node.Parameter as OpcDaParameter;
         foreach (var point in points)
         {
             if (!point.Address.IsNullOrEmpty())
             {
-                var rs = _client.Read<Int32>(point.Address);
-
-                if (rs.Quality == Hylasoft.Opc.Common.Quality.Good)
+                var item = new Item { ItemName = point.Address };
+                var rs = _client.Read(new[] { item }).FirstOrDefault();
+                if (rs != null && rs.Quality == Quality.Good)
                     dic[point.Name] = rs.Value;
             }
         }
@@ -117,24 +123,15 @@ public class OPCDriver : DisposeBase, IDriver
     /// <param name="value">数值</param>
     public Object Write(INode node, IPoint point, Object value)
     {
-        var address = point.Address;
-        var value2 = value.ToString();
-
-        var retry = 3;
-        while (true)
+        var val = new ItemValue
         {
-            try
-            {
-                _client.Write(address, value2);
-                break;
-            }
-            catch (Exception ex)
-            {
-                if (--retry <= 0) throw;
-            }
-        }
+            ItemName = point.Address,
+            Value = value
+        };
 
-        return true;
+        var result = _client.Write(new[] { val });
+
+        return result;
     }
 
     /// <summary>
