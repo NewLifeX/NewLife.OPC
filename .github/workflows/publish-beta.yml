@@ -4,7 +4,8 @@ on:
   push:
     branches: [ master ]
     paths:
-        - 'NewLife.NetPing/**'
+        - 'NewLife.OpcUa/**'
+        - 'NewLife.OpcDa/**'
   workflow_dispatch:
 
 jobs:
@@ -20,10 +21,12 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore
       run: |
-        dotnet restore NewLife.NetPing/NewLife.NetPing.csproj
+        dotnet restore NewLife.OpcUa/NewLife.OpcUa.csproj
+        dotnet restore NewLife.OpcDa/NewLife.OpcDa.csproj
     - name: Build
       run: |
-        dotnet pack --no-restore --version-suffix $(date "+%Y.%m%d-beta%H%M") -c Release -o out NewLife.NetPing/NewLife.NetPing.csproj
+        dotnet pack --no-restore --version-suffix $(date "+%Y.%m%d-beta%H%M") -c Release -o out NewLife.OpcUa/NewLife.OpcUa.csproj
+        dotnet pack --no-restore --version-suffix $(date "+%Y.%m%d-beta%H%M") -c Release -o out NewLife.OpcDa/NewLife.OpcDa.csproj
     - name: Publish
       run: |
         dotnet nuget push ./out/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.nugetKey }}

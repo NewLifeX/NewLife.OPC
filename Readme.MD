@@ -2,14 +2,17 @@
 
 ![GitHub top language](https://img.shields.io/github/languages/top/newlifex/NewLife.OPC?logo=github)
 ![GitHub License](https://img.shields.io/github/license/newlifex/NewLife.OPC?logo=github)
-![Nuget Downloads](https://img.shields.io/nuget/dt/NewLife.OPC?logo=nuget)
-![Nuget](https://img.shields.io/nuget/v/NewLife.OPC?logo=nuget)
-![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/NewLife.OPC?label=dev%20nuget&logo=nuget)
+![Nuget Downloads](https://img.shields.io/nuget/dt/NewLife.OpcUa?logo=nuget)
+![Nuget](https://img.shields.io/nuget/v/NewLife.OpcUa?logo=nuget)
+![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/NewLife.OpcUa?label=dev%20nuget&logo=nuget)
+![Nuget Downloads](https://img.shields.io/nuget/dt/NewLife.OpcDa?logo=nuget)
+![Nuget](https://img.shields.io/nuget/v/NewLife.OpcDa?logo=nuget)
+![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/NewLife.OpcDa?label=dev%20nuget&logo=nuget)
 
 OPC协议驱动，用于过程控制和制造业自动化系统  
 
 源码： https://github.com/NewLifeX/NewLife.OPC  
-Nuget：NewLife.OPC  
+Nuget：NewLife.OpcUa / NewLife.OpcDa  
 
 
 ## 新生命项目矩阵

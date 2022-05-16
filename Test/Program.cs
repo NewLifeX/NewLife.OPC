@@ -5,8 +5,8 @@ using NewLife.OPC.Drivers;
 
 XTrace.UseConsole();
 
-var driver = new OPCDriver();
-var pm = new OPCParameter();
+var driver = new OpcUaDriver();
+var pm = new OpcUaParameter();
 var node = driver.Open(null, pm);
 
 var point = new PointModel

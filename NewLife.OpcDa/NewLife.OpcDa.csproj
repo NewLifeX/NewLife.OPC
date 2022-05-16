@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <AssemblyTitle>设备网络心跳驱动</AssemblyTitle>
-    <Description>IoT驱动，通过Ping探测到目标设备的网络情况，并收集延迟数据</Description>
+    <AssemblyTitle>OpcDa协议</AssemblyTitle>
+    <Description>OPC协议驱动，用于过程控制和制造业自动化系统</Description>
     <Company>新生命开发团队</Company>
     <Copyright>©2002-2022 新生命开发团队</Copyright>
     <VersionPrefix>1.0</VersionPrefix>
