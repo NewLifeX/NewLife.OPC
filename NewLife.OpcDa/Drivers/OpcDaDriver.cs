@@ -99,16 +99,32 @@ public class OpcDaDriver : DisposeBase, IDriver
         var dic = new Dictionary<String, Object>();
 
         if (points == null || points.Length == 0) return dic;
+        points = points.Where(e => !e.Address.IsNullOrEmpty()).ToArray();
 
-        //var p = node.Parameter as OpcDaParameter;
+        // 构造参数，准备批量读取
+        var ids = new List<Item>();
         foreach (var point in points)
         {
-            if (!point.Address.IsNullOrEmpty())
+            var id = new Item
             {
-                var item = new Item { ItemName = point.Address };
-                var rs = _client.Read(new[] { item }).FirstOrDefault();
+                ItemName = point.Address
+            };
+            ids.Add(id);
+        }
+
+        if (ids.Count > 0)
+        {
+            // 批量读取
+            var results = _client.Read(ids.ToArray());
+
+            // 按照点位逐个赋值
+            for (var i = 0; i < results.Length; i++)
+            {
+                var rs = results[i];
                 if (rs != null && rs.Quality == Quality.Good)
-                    dic[point.Name] = rs.Value;
+                {
+                    dic[points[i].Name] = rs.Value;
+                }
             }
         }
 
