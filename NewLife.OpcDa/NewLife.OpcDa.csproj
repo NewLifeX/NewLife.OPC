@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netstandard2.0;net4.0;net4.5</TargetFrameworks>
     <AssemblyTitle>OpcDa协议</AssemblyTitle>
     <Description>OPC协议驱动，用于过程控制和制造业自动化系统</Description>
     <Company>新生命开发团队</Company>
