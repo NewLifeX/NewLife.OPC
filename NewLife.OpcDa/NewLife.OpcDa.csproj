@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;net4.0;net4.5</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
     <AssemblyTitle>OpcDa协议</AssemblyTitle>
     <Description>OPC协议驱动，用于过程控制和制造业自动化系统</Description>
     <Company>新生命开发团队</Company>
@@ -15,6 +15,8 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Doc\newlife.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -43,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NewLife.IoT" Version="1.1.2022.516-beta1327" />
+    <PackageReference Include="NewLife.IoT" Version="1.1.2022.816-beta1346" />
   </ItemGroup>
 
   <ItemGroup>
