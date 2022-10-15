@@ -43,7 +43,7 @@ public class OpcUaDriver : DriverBase
     /// 创建驱动参数对象，可序列化成Xml/Json作为该协议的参数模板
     /// </summary>
     /// <returns></returns>
-    public override IDriverParameter CreateParameter() => new OpcUaParameter();
+    public override IDriverParameter GetDefaultParameter() => new OpcUaParameter();
 
     /// <summary>
     /// 打开通道。一个OPC设备可能分为多个通道读取，需要共用Tcp连接，以不同节点区分

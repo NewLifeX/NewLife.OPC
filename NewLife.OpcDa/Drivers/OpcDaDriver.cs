@@ -14,7 +14,7 @@ namespace NewLife.OPC.Drivers;
 /// </summary>
 [Driver("OpcDa")]
 [DisplayName("OpcDa协议")]
-public class OpcDaDriver : DisposeBase, IDriver
+public class OpcDaDriver : DriverBase, IDriver
 {
     private Opc.Da.Server _client;
     private Int32 _nodes;
@@ -38,7 +38,7 @@ public class OpcDaDriver : DisposeBase, IDriver
     /// 创建驱动参数对象，可序列化成Xml/Json作为该协议的参数模板
     /// </summary>
     /// <returns></returns>
-    public virtual IDriverParameter CreateParameter() => new OpcDaParameter();
+    public override IDriverParameter GetDefaultParameter() => new OpcDaParameter();
 
     /// <summary>
     /// 打开通道。一个OPC设备可能分为多个通道读取，需要共用Tcp连接，以不同节点区分
@@ -46,7 +46,7 @@ public class OpcDaDriver : DisposeBase, IDriver
     /// <param name="channel">通道</param>
     /// <param name="parameters">参数</param>
     /// <returns></returns>
-    public INode Open(IDevice channel, IDictionary<String, Object> parameters)
+    public override INode Open(IDevice channel, IDictionary<String, Object> parameters)
     {
         var pm = JsonHelper.Convert<OpcDaParameter>(parameters);
 
@@ -79,7 +79,7 @@ public class OpcDaDriver : DisposeBase, IDriver
     /// 关闭设备驱动
     /// </summary>
     /// <param name="node"></param>
-    public void Close(INode node)
+    public override void Close(INode node)
     {
         if (Interlocked.Decrement(ref _nodes) <= 0)
         {
@@ -94,7 +94,7 @@ public class OpcDaDriver : DisposeBase, IDriver
     /// <param name="node">节点对象，可存储站号等信息，仅驱动自己识别</param>
     /// <param name="points">点位集合，Address属性地址示例：D100、C100、W100、H100</param>
     /// <returns></returns>
-    public IDictionary<String, Object> Read(INode node, IPoint[] points)
+    public override IDictionary<String, Object> Read(INode node, IPoint[] points)
     {
         var dic = new Dictionary<String, Object>();
 
@@ -137,7 +137,7 @@ public class OpcDaDriver : DisposeBase, IDriver
     /// <param name="node">节点对象，可存储站号等信息，仅驱动自己识别</param>
     /// <param name="point">点位</param>
     /// <param name="value">数值</param>
-    public Object Write(INode node, IPoint point, Object value)
+    public override Object Write(INode node, IPoint point, Object value)
     {
         var val = new ItemValue
         {
@@ -150,12 +150,12 @@ public class OpcDaDriver : DisposeBase, IDriver
         return result;
     }
 
-    /// <summary>
-    /// 控制设备，特殊功能使用
-    /// </summary>
-    /// <param name="node"></param>
-    /// <param name="parameters"></param>
-    /// <exception cref="NotImplementedException"></exception>
-    public virtual void Control(INode node, IDictionary<String, Object> parameters) => throw new NotImplementedException();
+    ///// <summary>
+    ///// 控制设备，特殊功能使用
+    ///// </summary>
+    ///// <param name="node"></param>
+    ///// <param name="parameters"></param>
+    ///// <exception cref="NotImplementedException"></exception>
+    //public virtual void Control(INode node, IDictionary<String, Object> parameters) => throw new NotImplementedException();
     #endregion
 }
