@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NewLife.IoT" Version="1.4.2022.1001" />
+    <PackageReference Include="NewLife.IoT" Version="1.8.2023.511" />
     <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua.Client" Version="1.4.370.12" />
   </ItemGroup>
 
