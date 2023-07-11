@@ -2,7 +2,6 @@
 using NewLife.IoT;
 using NewLife.IoT.Drivers;
 using NewLife.IoT.ThingModels;
-using NewLife.Serialization;
 using Opc.Ua;
 using Opc.Ua.Client;
 using INode = NewLife.IoT.Drivers.INode;
@@ -17,7 +16,7 @@ namespace NewLife.OPC.Drivers;
 [DisplayName("OpcUa协议")]
 public class OpcUaDriver : DriverBase
 {
-    private Session _client;
+    private ISession _client;
     private Int32 _nodes;
     private SessionReconnectHandler _reConnectHandler;
 
@@ -49,11 +48,11 @@ public class OpcUaDriver : DriverBase
     /// 打开通道。一个OPC设备可能分为多个通道读取，需要共用Tcp连接，以不同节点区分
     /// </summary>
     /// <param name="channel">通道</param>
-    /// <param name="parameters">参数</param>
+    /// <param name="parameter">参数</param>
     /// <returns></returns>
-    public override INode Open(IDevice channel, IDictionary<String, Object> parameters)
+    public override INode Open(IDevice channel, IDriverParameter parameter)
     {
-        var pm = JsonHelper.Convert<OpcUaParameter>(parameters);
+        var pm = parameter as OpcUaParameter;
 
         if (_client == null)
         {
@@ -77,7 +76,7 @@ public class OpcUaDriver : DriverBase
                 new String[] { }).Result;
 
             // set up keep alive callback.
-            client.KeepAlive += new KeepAliveEventHandler(Session_KeepAlive);
+            client.KeepAlive += Session_KeepAlive;
 
             _client = client;
         }
@@ -180,7 +179,7 @@ public class OpcUaDriver : DriverBase
         return configuration;
     }
 
-    private void Session_KeepAlive(Session session, KeepAliveEventArgs e)
+    private void Session_KeepAlive(ISession session, KeepAliveEventArgs e)
     {
         // check for events from discarded sessions.
         if (!Object.ReferenceEquals(session, _client)) return;

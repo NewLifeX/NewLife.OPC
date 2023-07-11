@@ -44,11 +44,11 @@ public class OpcDaDriver : DriverBase, IDriver
     /// 打开通道。一个OPC设备可能分为多个通道读取，需要共用Tcp连接，以不同节点区分
     /// </summary>
     /// <param name="channel">通道</param>
-    /// <param name="parameters">参数</param>
+    /// <param name="parameter">参数</param>
     /// <returns></returns>
-    public override INode Open(IDevice channel, IDictionary<String, Object> parameters)
+    public override INode Open(IDevice channel, IDriverParameter parameter)
     {
-        var pm = JsonHelper.Convert<OpcDaParameter>(parameters);
+        var pm = parameter as OpcDaParameter;
 
         if (_client == null)
         {
