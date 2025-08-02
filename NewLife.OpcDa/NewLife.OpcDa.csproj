@@ -45,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NewLife.IoT" Version="2.6.2025.701" />
+    <PackageReference Include="NewLife.IoT" Version="2.6.2025.801" />
   </ItemGroup>
 
   <ItemGroup>
