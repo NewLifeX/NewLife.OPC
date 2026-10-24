@@ -1,4 +1,4 @@
-﻿using NewLife.IoT.Drivers;
+using NewLife.IoT.Drivers;
 using NewLife.IoT.ThingModels;
 using NewLife.Log;
 using NewLife.OPC.Drivers;
@@ -7,7 +7,7 @@ XTrace.UseConsole();
 
 var driver = new OpcUaDriver();
 var pm = new OpcUaParameter();
-var node = driver.Open(null, pm);
+var node = await driver.OpenAsync(null, pm);
 
 var point = new PointModel
 {
@@ -22,10 +22,17 @@ var point2 = new PointModel
     Type = "Int32",
 };
 
-var dic = driver.Read(node, new[] { point, point2 });
-foreach (var item in dic)
+var result = await driver.ReadAsync(node, [point, point2]);
+if (result.IsSuccess)
 {
-    XTrace.WriteLine("{0}\t= {1}", item.Key, item.Value);
+    for (var i = 0; i < result.Points.Length; i++)
+    {
+        XTrace.WriteLine("{0}\t= {1}", result.Points[i].Name, result.Values[i]);
+    }
+}
+else
+{
+    XTrace.WriteLine("读取失败：{0} {1}", result.Code, result.Message);
 }
 
-driver.Close(node);
+await driver.CloseAsync(node);

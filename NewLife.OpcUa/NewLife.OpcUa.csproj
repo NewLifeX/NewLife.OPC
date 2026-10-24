@@ -4,8 +4,8 @@
     <AssemblyTitle>OpcUa协议</AssemblyTitle>
     <Description>OPC协议驱动，用于过程控制和制造业自动化系统</Description>
     <Company>新生命开发团队</Company>
-    <Copyright>©2002-2025 新生命开发团队</Copyright>
-    <VersionPrefix>1.0</VersionPrefix>
+    <Copyright>©2002-2026 新生命开发团队</Copyright>
+    <VersionPrefix>1.1</VersionPrefix>
     <VersionSuffix>$([System.DateTime]::Now.ToString(`yyyy.MMdd`))</VersionSuffix>
     <Version>$(VersionPrefix).$(VersionSuffix)</Version>
     <FileVersion>$(Version)</FileVersion>
@@ -26,8 +26,9 @@
     <PackageIcon>leaf.png</PackageIcon>
     <RepositoryUrl>https://github.com/NewLifeX/NewLife.OPC</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>物联网;IoT;边缘计算;Edge;新生命团队;NewLife;PLC;$(AssemblyName)</PackageTags>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>物联网;IoT;边缘计算;Edge;新生命团队;NewLife;PLC;OPC;OPCUA;OPCDA;异步;$(AssemblyName)</PackageTags>
+    <PackageReadmeFile>Readme.MD</PackageReadmeFile>
+    <PackageReleaseNotes>升级 NewLife.IoT 3.2 异步驱动接口，Open/Close/Read/Write 全面异步化并返回 ReadResult/WriteResult 结构化结果；OPC UA 会话创建改为异步等待，避免同步阻塞；OPC DA 批量读写统一错误码并记录异常日志；解决方案升级为 slnx 格式，示例程序升级 net10.0；引入 .NET Framework 引用程序集，支持 Linux 构建 net461；CI 同时发布 NuGet.org、GitHub Packages 与 GitHub Release</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -41,15 +42,17 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" Condition="$(TargetFramework.StartsWith('net4'))" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NewLife.IoT" Version="2.7.2025.1112" />
+    <PackageReference Include="NewLife.IoT" Version="3.2.2026.1024" />
     <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua.Client" Version="1.4.371.96" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="..\Doc\leaf.png" Link="leaf.png" PackagePath="\" />
+    <None Include="..\Readme.MD" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>

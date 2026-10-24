@@ -14,6 +14,34 @@ OPC协议驱动，用于过程控制和制造业自动化系统
 源码： https://github.com/NewLifeX/NewLife.OPC  
 Nuget：NewLife.OpcUa / NewLife.OpcDa  
 
+> 自 v1.1 起驱动接口升级至 NewLife.IoT v3，读写返回 `ReadResult` / `WriteResult` 结构化结果，旧版同步 `Open` / `Read` / `Write` 方法已由异步接口取代。
+
+## 快速开始
+
+```csharp
+using NewLife.IoT.Drivers;
+using NewLife.IoT.ThingModels;
+using NewLife.OPC.Drivers;
+
+var driver = new OpcUaDriver();
+var node = await driver.OpenAsync(null, new OpcUaParameter { Address = "opc.tcp://127.0.0.1:4840" });
+
+var points = new IPoint[]
+{
+    new PointModel { Name = "Temperature", Address = "ns=2;s=Temperature", Type = "Double" },
+};
+var result = await driver.ReadAsync(node, points);
+if (result.IsSuccess)
+{
+    Console.WriteLine($"{points[0].Name} = {result.GetValue(points[0].Name)}");
+}
+else
+{
+    Console.WriteLine($"{result.Code}: {result.Message}");
+}
+
+await driver.CloseAsync(node);
+```
 
 ## 生态版图
 

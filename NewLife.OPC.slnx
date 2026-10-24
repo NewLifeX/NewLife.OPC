@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".github/workflows/publish-beta.yml" />
+    <File Path=".github/workflows/publish.yml" />
+    <File Path=".github/workflows/test.yml" />
+    <File Path="Readme.MD" />
+  </Folder>
+  <Project Path="NewLife.OpcDa/NewLife.OpcDa.csproj" />
+  <Project Path="NewLife.OpcUa/NewLife.OpcUa.csproj" />
+  <Project Path="Test/Test.csproj" />
+</Solution>
